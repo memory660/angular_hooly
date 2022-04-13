@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { SocietyDto } from '../../models/society-dto';
 import { HttpService } from '../../services/http.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { HttpService } from '../../services/http.service';
 })
 export class SelectSocietyComponent implements OnInit {
   public societyForm!: FormGroup;
-  societies$!: Observable<any>;
+  societies$!: Observable<SocietyDto[]>;
 
   constructor(private formBuilder: FormBuilder, private httpService: HttpService) {
     this.societyForm = this.formBuilder.group({

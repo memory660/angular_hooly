@@ -15,6 +15,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { findComponent } from 'src/app/spec-helpers/element.spec-helper';
 import { reservations } from 'src/app/spec-helpers/spec-helpers';
+import { SocietyFormDto } from '../../models/formDto';
 import { ReservationDto } from '../../models/reservation-dto';
 import { SocietyDto } from '../../models/society-dto';
 import { HttpService } from '../../services/http.service';
@@ -80,11 +81,11 @@ describe('ReservationComponent', () => {
     expect(selectSocietyComponent).toBeTruthy();
     expect(reservationListComponent).toBeTruthy();
 
-    const societyRef = {societyId: 1};
+    const societyRef = {societyId: 1} as SocietyFormDto;
     const societyObs$ = of(societyRef);
     component.reservationForm.controls['society'].setValue(societyRef);
     fixture.detectChanges();
-    selectDateComponent.componentInstance.societyObs$.subscribe((society: any) => {
+    selectDateComponent.componentInstance.societyObs$.subscribe((society: SocietyFormDto) => {
       expect(societyRef).toEqual(society);
     })
 

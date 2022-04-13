@@ -44,11 +44,12 @@ export class ReservationComponent implements OnInit, OnDestroy {
       no: this.selectLocationComponent.createFormGroup(),
     })
     // écoute la sélection de l'utilisateur (foodtrack) et de la société, si ok, charge les réservations
-    this.sub = this.reservationForm.controls['user'].valueChanges.pipe(
+    this.sub = this.reservationForm.controls['user'].valueChanges
+    .pipe(
       combineLatestWith(this.reservationForm.controls['society'].valueChanges)
     ).subscribe((data: {userId: number, societyId: number}[]) => {
       this.resetControls();
-      this.httpService.setReservations(data[0].userId,  data[1].societyId,);
+      this.httpService.setReservations(data[0].userId,  data[1].societyId);
     })
     // écoute si il y a un chargement de données provenant de l'api
     this.subLoading = this.reservationStoreService.getLoading().subscribe((loading: boolean) => {

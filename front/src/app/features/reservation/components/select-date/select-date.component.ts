@@ -5,6 +5,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { ReservationDto } from '../../models/reservation-dto';
 import { combineLatest, Observable, Subscription, tap } from 'rxjs';
 import { SocietyDto } from '../../models/society-dto';
+import { SocietyFormDto } from '../../models/formDto';
 
 export const MY_DATE_FORMATS = {
     parse: {
@@ -27,7 +28,7 @@ export const MY_DATE_FORMATS = {
   ]
 })
 export class SelectDateComponent implements OnInit, OnDestroy {
-  @Input() societyObs$!: Observable<SocietyDto>;
+  @Input() societyObs$!: Observable<SocietyFormDto>;
   minDate = new Date(new Date().setDate(new Date().getDate() + 1));
   maxDate = new Date(new Date().setDate(new Date().getDate() + 365));
   datesRejectedArr = <string[]>[];
@@ -45,7 +46,7 @@ export class SelectDateComponent implements OnInit, OnDestroy {
       society: this.societyObs$,
       reservations: this.reservationStoreService.getReservationsObs()
     })
-    .subscribe((data: { society: any, reservations: ReservationDto[]}) => {
+    .subscribe((data: { society: SocietyFormDto, reservations: ReservationDto[]}) => {
       this.datesRejectedArr = [];
       data.reservations.forEach((reservation: ReservationDto) => {
         if (reservation.society.id === data.society.societyId) {

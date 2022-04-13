@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { combineLatest, filter, map, Observable, switchMap, tap } from 'rxjs';
-import { SocietyDto } from '../../models/society-dto';
+import { combineLatest, filter, map, Observable, switchMap } from 'rxjs';
+import { SocietyFormDto } from '../../models/formDto';
 import { HttpService } from '../../services/http.service';
+
+export type DataCombine = {date: {date: string}, society: SocietyFormDto, locations: number[]};
+export type DataLocation = {locationNo: number};
 
 @Component({
   selector: 'app-select-location',
@@ -11,7 +14,7 @@ import { HttpService } from '../../services/http.service';
 })
 export class SelectLocationComponent implements OnInit {
   @Input() dateObs$!: Observable<any>;
-  @Input() societyObs$!: Observable<SocietyDto>;
+  @Input() societyObs$!: Observable<SocietyFormDto>;
   locationForm: FormGroup;
   locations$: Observable<number[]>;
 
@@ -30,11 +33,11 @@ export class SelectLocationComponent implements OnInit {
       date: this.dateObs$,
       locations: this.locations$
     }).pipe(
-      filter((data: any) => data.date.date != null && data.society != null),
+      filter((data: DataCombine) => data.date.date != null && data.society != null),
       switchMap(
-        (data: any) => that.httpService.getReservationsFromSociety(data.society.societyId as number, data.date.date)
+        (data: DataCombine) => that.httpService.getReservationsFromSociety(data.society.societyId as number, data.date.date)
         .pipe(
-            map((nos: any) => that.getArraysIntersection(data.locations, nos.map((v: any) => v.locationNo))),
+            map((nos: DataLocation[]) => that.getArraysIntersection(data.locations, nos.map((location: DataLocation) => location.locationNo))),
         )
       )
     );

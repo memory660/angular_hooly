@@ -41,8 +41,8 @@ export class HttpService {
     );
   }
 
-  getReservationsFromSociety(societyId: number, date: string): Observable<ReservationDto[]> {
-    return this.http.get<ReservationDto[]>(`${environment.url}/data/reservations-society/${societyId}/${date}`).pipe(
+  getReservationsFromSociety(societyId: number, date: string): Observable<{locationNo: number}[]> {
+    return this.http.get<{locationNo: number}[]>(`${environment.url}/data/reservations-society/${societyId}/${date}`).pipe(
       catchError(this.handleError)
     );
   }
