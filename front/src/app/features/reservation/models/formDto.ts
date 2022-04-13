@@ -5,3 +5,7 @@ export interface SocietyFormDto {
 export interface LocationFormDto {
   locationNo: number;
 }
+
+export interface DateFormDto {
+  date: string;
+}

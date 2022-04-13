@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectorRef, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -15,7 +15,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of } from 'rxjs';
 import { findComponent } from 'src/app/spec-helpers/element.spec-helper';
 import { reservations } from 'src/app/spec-helpers/spec-helpers';
-import { SocietyFormDto } from '../../models/formDto';
+import { DateFormDto, SocietyFormDto } from '../../models/formDto';
 import { ReservationDto } from '../../models/reservation-dto';
 import { SocietyDto } from '../../models/society-dto';
 import { HttpService } from '../../services/http.service';
@@ -74,22 +74,39 @@ describe('ReservationComponent', () => {
     reservationListComponent = findComponent(fixture, 'app-reservation-list');
   });
 
-  it('should create', () => {
-
+  it('should create components', () => {
     expect(component).toBeTruthy()
     expect(selectUserComponent).toBeTruthy();
     expect(selectSocietyComponent).toBeTruthy();
     expect(reservationListComponent).toBeTruthy();
+    expect(selectDateComponent).toBeTruthy();
+    expect(selectLocationComponent).toBeTruthy();
+  });
 
+  it('should date component input', () => {
     const societyRef = {societyId: 1} as SocietyFormDto;
-    const societyObs$ = of(societyRef);
-    component.reservationForm.controls['society'].setValue(societyRef);
-    fixture.detectChanges();
     selectDateComponent.componentInstance.societyObs$.subscribe((society: SocietyFormDto) => {
       expect(societyRef).toEqual(society);
     })
-
-
+    component.reservationForm.controls['society'].setValue(societyRef);
+    fixture.detectChanges();
   });
 
+  it('should location component input', () => {
+    // societyObs$
+    const societyRef = {societyId: 1} as SocietyFormDto;
+    selectDateComponent.componentInstance.societyObs$.subscribe((society: SocietyFormDto) => {
+      expect(societyRef).toEqual(society);
+    })
+    component.reservationForm.controls['society'].patchValue(societyRef);
+    fixture.detectChanges();
+
+    // dateObs$
+    const dateRef = {date: "2022-01-31"} as DateFormDto;
+    selectLocationComponent.componentInstance.dateObs$.subscribe((date: DateFormDto) => {
+      expect(dateRef).toEqual(date);
+    })
+    component.reservationForm.controls['date'].setValue(dateRef);
+    fixture.detectChanges();
+  });
 });

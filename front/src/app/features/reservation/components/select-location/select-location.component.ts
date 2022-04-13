@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { combineLatest, filter, map, Observable, switchMap } from 'rxjs';
-import { SocietyFormDto } from '../../models/formDto';
+import { DateFormDto, SocietyFormDto } from '../../models/formDto';
 import { HttpService } from '../../services/http.service';
 
-export type DataCombine = {date: {date: string}, society: SocietyFormDto, locations: number[]};
+export type DataCombine = {date: DateFormDto, society: SocietyFormDto, locations: number[]};
 export type DataLocation = {locationNo: number};
 
 @Component({
