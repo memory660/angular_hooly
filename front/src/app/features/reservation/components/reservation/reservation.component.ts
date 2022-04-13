@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { combineLatest, combineLatestWith, Observable, Subscription, tap } from 'rxjs';
 import { ReservationSave } from '../../models/reservation-save';
+import { SocietyDto } from '../../models/society-dto';
 import { HttpService } from '../../services/http.service';
 import { ReservationStoreService } from '../../services/reservation-store.service';
 import { SelectDateComponent } from '../select-date/select-date.component';
@@ -28,7 +29,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
   loading = false;
   sub!: Subscription;
   subLoading!: Subscription;
-  selectDateData$: any;
+  societyValueChange$!: Observable<SocietyDto>;
 
   constructor(private httpService: HttpService, private reservationStoreService: ReservationStoreService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) {
     this.reservations$ = this.reservationStoreService.getReservationsObs();
@@ -56,10 +57,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
       this.cd.detectChanges();
     });
     //
-    this.selectDateData$ = combineLatest([
-      this.reservationForm.controls['society'].valueChanges,
-      this.reservationStoreService.getReservationsObs()
-    ])
+    this.societyValueChange$ = this.reservationForm.controls['society'].valueChanges;
+    //
   }
 
   onRegister() {

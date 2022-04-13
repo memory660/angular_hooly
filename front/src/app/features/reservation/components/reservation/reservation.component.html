@@ -5,7 +5,7 @@
 
 <app-select-society></app-select-society>
 
-<app-select-date [data]="selectDateData$ |async"></app-select-date>
+<app-select-date [societyObs$]="reservationForm.controls['society'].valueChanges"></app-select-date>
 
 <app-select-location  [dateObs]="reservationForm.controls['date'].valueChanges" [societyObs]="reservationForm.controls['society'].valueChanges"></app-select-location>
 
