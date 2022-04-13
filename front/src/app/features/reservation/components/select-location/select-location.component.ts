@@ -10,8 +10,8 @@ import { HttpService } from '../../services/http.service';
   styleUrls: ['./select-location.component.scss']
 })
 export class SelectLocationComponent implements OnInit {
-  @Input() dateObs!: Observable<any>;
-  @Input() societyObs!: Observable<SocietyDto>;
+  @Input() dateObs$!: Observable<any>;
+  @Input() societyObs$!: Observable<SocietyDto>;
   locationForm: FormGroup;
   locations$: Observable<number[]>;
 
@@ -26,8 +26,8 @@ export class SelectLocationComponent implements OnInit {
     let that = this;
 
     this.locations$ = combineLatest({
-      society: this.societyObs,
-      date: this.dateObs,
+      society: this.societyObs$,
+      date: this.dateObs$,
       locations: this.locations$
     }).pipe(
       filter((data: any) => data.date.date != null && data.society != null),

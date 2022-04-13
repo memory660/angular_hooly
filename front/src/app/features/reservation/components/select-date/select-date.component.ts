@@ -28,15 +28,6 @@ export const MY_DATE_FORMATS = {
 })
 export class SelectDateComponent implements OnInit, OnDestroy {
   @Input() societyObs$!: Observable<SocietyDto>;
-  _data: any;
-  @Input() set data(values: any) {
-    this._data = values;
-    console.log(values);
-  //  if (values) this.action(values);
-  }
-  get data() {
-    return this._data;
-  }
   minDate = new Date(new Date().setDate(new Date().getDate() + 1));
   maxDate = new Date(new Date().setDate(new Date().getDate() + 365));
   datesRejectedArr = <string[]>[];
@@ -69,8 +60,6 @@ export class SelectDateComponent implements OnInit, OnDestroy {
       });
     })
   }
-
-
 
   createFormGroup(): FormGroup {
     return this.dateForm;

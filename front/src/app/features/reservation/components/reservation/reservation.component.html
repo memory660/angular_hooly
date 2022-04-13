@@ -7,7 +7,7 @@
 
 <app-select-date [societyObs$]="reservationForm.controls['society'].valueChanges"></app-select-date>
 
-<app-select-location  [dateObs]="reservationForm.controls['date'].valueChanges" [societyObs]="reservationForm.controls['society'].valueChanges"></app-select-location>
+<app-select-location  [dateObs$]="reservationForm.controls['date'].valueChanges" [societyObs$]="reservationForm.controls['society'].valueChanges"></app-select-location>
 
 <div>
   <div class="lleft">

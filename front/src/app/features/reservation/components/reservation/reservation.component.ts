@@ -29,7 +29,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
   loading = false;
   sub!: Subscription;
   subLoading!: Subscription;
-  societyValueChange$!: Observable<SocietyDto>;
 
   constructor(private httpService: HttpService, private reservationStoreService: ReservationStoreService, private formBuilder: FormBuilder, private cd: ChangeDetectorRef) {
     this.reservations$ = this.reservationStoreService.getReservationsObs();
@@ -57,7 +56,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
       this.cd.detectChanges();
     });
     //
-    this.societyValueChange$ = this.reservationForm.controls['society'].valueChanges;
     //
   }
 
@@ -84,7 +82,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
   }
 
   conv(values: reservationFormType): ReservationSave {
-console.log(values)
     const date = new Date(this.reservationForm.value.date.date);
     const dateConv = new Date(date.setDate(date.getDate() + 1)).toISOString().slice(0, 10);
     return {date: dateConv, no: values.no.no, societyId: values.society.societyId, userId: values.user.userId} as ReservationSave;

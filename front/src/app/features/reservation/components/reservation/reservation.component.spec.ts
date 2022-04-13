@@ -73,8 +73,6 @@ describe('ReservationComponent', () => {
     reservationListComponent = findComponent(fixture, 'app-reservation-list');
   });
 
-
-
   it('should create', () => {
 
     expect(component).toBeTruthy()
@@ -82,11 +80,11 @@ describe('ReservationComponent', () => {
     expect(selectSocietyComponent).toBeTruthy();
     expect(reservationListComponent).toBeTruthy();
 
-    const societyRef = {id: 1, name:"name"} as SocietyDto;
+    const societyRef = {societyId: 1};
     const societyObs$ = of(societyRef);
-    component.societyValueChange$ = societyObs$;
+    component.reservationForm.controls['society'].setValue(societyRef);
     fixture.detectChanges();
-    selectDateComponent.componentInstance.societyObs$.subscribe((society: SocietyDto) => {
+    selectDateComponent.componentInstance.societyObs$.subscribe((society: any) => {
       expect(societyRef).toEqual(society);
     })
 
