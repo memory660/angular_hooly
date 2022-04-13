@@ -1,4 +1,5 @@
 import { DayDto } from "../features/reservation/models/day-dto";
+import { SocietyFormDto } from "../features/reservation/models/formDto";
 import { LocationDto } from "../features/reservation/models/location-dto";
 import { ReservationDto } from "../features/reservation/models/reservation-dto";
 import { SocietyDto } from "../features/reservation/models/society-dto";
@@ -19,4 +20,8 @@ export const reservations: ReservationDto[] = [
 export const society1: SocietyDto = {
   id: 1,
   name: 'société 1'
+};
+
+export const societyFormDto1: SocietyFormDto = {
+  societyId: 1
 };

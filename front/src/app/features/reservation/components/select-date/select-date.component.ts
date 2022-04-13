@@ -6,6 +6,7 @@ import { ReservationDto } from '../../models/reservation-dto';
 import { combineLatest, Observable, Subscription, tap } from 'rxjs';
 import { SocietyDto } from '../../models/society-dto';
 import { SocietyFormDto } from '../../models/formDto';
+import { CombineDate } from '../../models/combine';
 
 export const MY_DATE_FORMATS = {
     parse: {
@@ -34,6 +35,7 @@ export class SelectDateComponent implements OnInit, OnDestroy {
   datesRejectedArr = <string[]>[];
   dateForm: FormGroup;
   sub!: Subscription;
+  mix$!: Observable<any>;
 
   constructor(private formBuilder: FormBuilder, private reservationStoreService: ReservationStoreService) {
     this.dateForm = this.formBuilder.group({
@@ -42,11 +44,12 @@ export class SelectDateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sub = combineLatest({
+    this.mix$ = combineLatest({
       society: this.societyObs$,
       reservations: this.reservationStoreService.getReservationsObs()
-    })
-    .subscribe((data: { society: SocietyFormDto, reservations: ReservationDto[]}) => {
+    });
+
+    this.sub = this.mix$.subscribe((data: CombineDate) => {
       this.datesRejectedArr = [];
       data.reservations.forEach((reservation: ReservationDto) => {
         if (reservation.society.id === data.society.societyId) {
