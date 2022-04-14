@@ -4,7 +4,7 @@ import { SocietyDto } from "./society-dto";
 import { UserDto } from "./user-dto";
 
 export interface ReservationDto {
-  id?: string;
+  id?: number;
   day: DayDto;
   location: LocationDto;
   society: SocietyDto;

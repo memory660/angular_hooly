@@ -9,7 +9,7 @@ export const locations: number[] = [1,2,3,4,5,6,7];
 
 export const reservations: ReservationDto[] = [
   {
-    id: '1',
+    id: 1,
     day: {id: 1, dateReservation: {date: '2022-04-21'}, dateBegin: {date: '2022-04-18'}, dateEnd: {date: '2022-04-24'}, weekNo: 16} as DayDto,
     location: {id: 1, locationNo: 1} as LocationDto,
     society: {id: 1, name: 'société 1'} as SocietyDto,
