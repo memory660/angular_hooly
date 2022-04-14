@@ -50,19 +50,25 @@ export class SelectDateComponent implements OnInit, OnDestroy {
     });
 
     this.sub = this.mix$.subscribe((data: CombineDate) => {
-      this.datesRejectedArr = [];
-      data.reservations.forEach((reservation: ReservationDto) => {
-        if (reservation.society.id === data.society.societyId) {
-          const dateStart = new Date(reservation.day.dateBegin.date);
-          const dateEnd = new Date(reservation.day.dateEnd.date);
-          this.datesRejectedArr.push(...this.getDatesInRange(dateStart, dateEnd));
-        } else {
-          const dates = [];
-          dates.push(new Date(reservation.day.dateReservation.date).toISOString().slice(0, 10));
-          this.datesRejectedArr.push(...dates);
-        }
-      });
+      this.datesRejectedArr = this.createDatesRejectedArr(data);
     })
+  }
+
+  createDatesRejectedArr(data: CombineDate): string[] {
+    let datesRejectedArr: string[] = [];
+    data.reservations.forEach((reservation: ReservationDto) => {
+      if (reservation.society.id === data.society.societyId) {
+        const dateStart = new Date(reservation.day.dateBegin.date);
+        const dateEnd = new Date(reservation.day.dateEnd.date);
+        datesRejectedArr.push(...this.getDatesInRange(dateStart, dateEnd));
+      } else {
+        const dates = [];
+        dates.push(new Date(reservation.day.dateReservation.date).toISOString().slice(0, 10));
+        datesRejectedArr.push(...dates);
+      }
+    });
+
+    return datesRejectedArr;
   }
 
   createFormGroup(): FormGroup {

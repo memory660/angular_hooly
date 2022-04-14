@@ -1,7 +1,7 @@
 export interface DayDto {
   id: number;
-  dateBegin: any;
-  dateEnd: any;
+  dateBegin: {date: string};
+  dateEnd: {date: string};
   dateReservation: any;
   weekNo: number;
 }

@@ -45,6 +45,13 @@ describe('SelectDateComponent', () => {
     const result = {reservations: reservations, society: societyFormDto1} as CombineDate;
     component.mix$.subscribe((data: CombineDate) => {
       expect(result).toEqual(data);
+
+      const resultRef = ['2022-04-18', '2022-04-19', '2022-04-20', '2022-04-21', '2022-04-22', '2022-04-23', '2022-04-24'];
+      expect(component.createDatesRejectedArr(data)).toEqual(resultRef);
+
+      data.society.societyId = 2;
+      const dateRef = ['2022-04-21'];
+      expect(component.createDatesRejectedArr(data)).toEqual(dateRef);
     })
   });
 });
