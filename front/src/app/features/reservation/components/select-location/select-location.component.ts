@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { isMoment } from 'moment';
 import { combineLatest, filter, map, Observable, switchMap } from 'rxjs';
 import { DateFormDto, SocietyFormDto } from '../../models/formDto';
 import { HttpService } from '../../services/http.service';
@@ -30,7 +31,9 @@ export class SelectLocationComponent implements OnInit {
 
     this.locations$ = combineLatest({
       society: this.societyObs$,
-      date: this.dateObs$,
+      date: this.dateObs$.pipe(
+        filter(date => this.checkValidDate(date))
+      ),
       locations: this.locations$
     }).pipe(
       filter((data: DataCombine) => data.date.date != null && data.society != null),
@@ -50,5 +53,21 @@ export class SelectLocationComponent implements OnInit {
 
   createFormGroup(): FormGroup {
     return this.locationForm;
+  }
+
+  checkValidDate(date: any): boolean {
+    console.log("m", date.date );
+    if (isMoment(date.date) ) {
+      const dateReg = /^\d{1,2}([./-])\d{1,2}\1\d{4}$/
+      let dateRedef = '';
+      if ( date.date._i.date) {
+        dateRedef = date.date._i.date + "/" + date.date._i.month + "/" + date.date._i.year;
+      } else {
+        dateRedef =date.date._i;
+      }
+      console.log("dateRedef", dateRedef );
+      if (date.date._i, dateRedef.match(dateReg)) return true;
+    }
+    return false;
   }
 }

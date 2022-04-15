@@ -30,8 +30,8 @@ export const MY_DATE_FORMATS = {
 })
 export class SelectDateComponent implements OnInit, OnDestroy {
   @Input() societyObs$!: Observable<SocietyFormDto>;
-  minDate = new Date(new Date().setDate(new Date().getDate() + 1));
-  maxDate = new Date(new Date().setDate(new Date().getDate() + 365));
+  minDate!: Date;
+  maxDate!: Date;
   datesRejectedArr = <string[]>[];
   dateForm: FormGroup;
   sub!: Subscription;
@@ -41,6 +41,7 @@ export class SelectDateComponent implements OnInit, OnDestroy {
     this.dateForm = this.formBuilder.group({
       date: ['', Validators.required],
     });
+    this.calculateDates();
   }
 
   ngOnInit(): void {
@@ -52,6 +53,12 @@ export class SelectDateComponent implements OnInit, OnDestroy {
     this.sub = this.mix$.subscribe((data: CombineDate) => {
       this.datesRejectedArr = this.createDatesRejectedArr(data);
     })
+  }
+
+
+  calculateDates() {
+    this.minDate = new Date(this.now().setDate(this.now().getDate() + 1));
+    this.maxDate = new Date(this.now().setDate(this.now().getDate() + 365));
   }
 
   createDatesRejectedArr(data: CombineDate): string[] {
@@ -76,7 +83,7 @@ export class SelectDateComponent implements OnInit, OnDestroy {
   }
 
   myFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).toISOString().slice(0, 10);
+    const day = (d || this.now()).toISOString().slice(0, 10);
     return !this.datesRejectedArr.some(v => day === v);
   };
 
@@ -91,6 +98,10 @@ export class SelectDateComponent implements OnInit, OnDestroy {
     }
 
     return dates;
+  }
+
+  now(): Date  {
+    return new Date();
   }
 
   ngOnDestroy(): void {
